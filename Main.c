@@ -9,7 +9,9 @@ void main()
 	menu ();
 }
 
-//Retirei os menus da biblioteca DasGatas... AINDA SOU ALTAMENTE CONTRA ISSO, CAMILA VAI MORRER!!!
+/*MALLOC EU SEI USAR, MAS O COMANDO FREE QUE E BOM... Bom que da 'raquear' uns pc maroto deixando ponteiro aberto hihihihihehehehahahhaha
+Camila e Carlos, fazer subtração vetorial e produto escalar xoxo*/
+
 
 //=== Submenu dos Vetores ===// FEITO POR SILVEIRAX
 
