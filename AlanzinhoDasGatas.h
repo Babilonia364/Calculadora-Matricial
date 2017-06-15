@@ -15,11 +15,11 @@ struct Vetores //Struct para definir N vetores//
 
 int LerVet(int *V1, int *L, int S) //Passa 2 vetores para a funcao o vetor a ser lido e seu tamanho//
 {
-	int i;
+	int m;
 	printf("| ");
-	for (i = 0; i<L[S]; i++) //Le o vetor e printa na tela//
+	for (m = 0; m<L[S]; m++) //Le o vetor e printa na tela//
 	{
-		printf("%d ", V1[i]);
+		printf("%d ", V1[m]);
 	}
 	printf("|\n\n");
 }
@@ -28,20 +28,20 @@ int LerVet(int *V1, int *L, int S) //Passa 2 vetores para a funcao o vetor a ser
 
 int SomaVet(int *V1, int *V2, int *n, int S) //Passa 2 vetores e seu tamanho na tela//
 {
-	int *Soma2=malloc(n[S]*sizeof(int)), i;
-	for(i=0; i<n[S]; i++) 
+	int *Soma2=malloc(n[S]*sizeof(int)), m;
+	for(m=0; m<n[S]; m++) 
 	{
-		Soma2[i] = V1[i]; //Atribui os valores do vetor 1-n a Soma2//
+		Soma2[m] = V1[m]; //Atribui os valores do vetor 1-n a Soma2//
 		if(S>=1)
 		{
-			Soma2[i]=Soma2[i]+V2[i]; //Faz a soma caso haja 2 vetores//
-			printf("%d ", Soma2[i]);
+			V2[m]=Soma2[m]+V2[m]; //Faz a soma caso haja 2 vetores//
+			printf("%d ", V2[m]);
 		}
 	}
 	printf("\n\n");
-	return *Soma2;
 	free (Soma2);
 	Soma2 = NULL;
+	return *V2;
 }
 
 //=== Declaração de vetores ===// FEITO POR DasGatas
@@ -70,11 +70,11 @@ void DeclaraVet(int opc_smenu_vetor)
 	}
 	switch (opc_smenu_vetor){ //Switch para puxar as outras funcoes presente na biblioteca//
 		case 1:
-			i=0;
-			while(i<len)
+			j=0;
+			while(j<len)
 			{
-			LerVet(V[i].Vet, k, i); //Puxa a funcao ler vetores e printa - los na tela//
-			i++;
+			LerVet(V[j].Vet, k, j); //Puxa a funcao ler vetores e printa - los na tela//
+			j++;
 			}
 			menu();
 			break;
@@ -85,7 +85,7 @@ void DeclaraVet(int opc_smenu_vetor)
 				while(j<len)
 				{
 					*Soma = SomaVet(V[j].Vet, Soma, k, j);
-					i++;
+					j++;
 				}
 			} else {printf(":)\n:)\n:)\n");}
 			menu();
