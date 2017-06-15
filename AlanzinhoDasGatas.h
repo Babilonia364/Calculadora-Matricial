@@ -68,7 +68,7 @@ void DeclaraVet(int opc_smenu_vetor)
 		case 2:
 			SomaVet(V[0].Vet, V[1].Vet, k);
 			break;
-		case default:
+		default:
 			printf("      Opcao invalida. Digite outra opcao.\n");
 			break;
 	}
