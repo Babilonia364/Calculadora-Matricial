@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 //Cabecalho com funcoes//
-int SomaVet(int *V1, int *V2, int *n, int S);
+int* SomaVet(int *V1, int *V2, int *n, int S);
 void DeclaraVet(int opc_smenu_vetor);
 void menu();
 int LerVet(int *V1, int *L, int S);
@@ -26,22 +26,25 @@ int LerVet(int *V1, int *L, int S) //Passa 2 vetores para a funcao o vetor a ser
 
 //=== Soma Vetorial ===// FEITO POR DasGatas
 
-int SomaVet(int *V1, int *V2, int *n, int S) //Passa 2 vetores e seu tamanho na tela//
+int* SomaVet(int *V1, int *V2, int *n, int S) //Passa 2 vetores e seu tamanho na tela//
 {
 	int *Soma2=malloc(n[S]*sizeof(int)), m;
 	for(m=0; m<n[S]; m++) 
 	{
+		Soma2[m]=0;
 		Soma2[m] = V1[m]; //Atribui os valores do vetor 1-n a Soma2//
 		if(S>=1)
 		{
-			V2[m]=Soma2[m]+V2[m]; //Faz a soma caso haja 2 vetores//
-			printf("%d ", V2[m]);
+			if(V2[m]>1000)
+			{
+			V2[m]=0;
+			Soma2[m]=Soma2[m]+V2[m]; //Faz a soma caso haja 2 vetores//
+			printf("%d ", Soma2[m]);
+			} else{Soma2[m]=Soma2[m]+V2[m]; printf("%d ", Soma2[m]);}
 		}
 	}
 	printf("\n\n");
-	free (Soma2);
-	Soma2 = NULL;
-	return *V2;
+	return Soma2;
 }
 
 //=== Declaração de vetores ===// FEITO POR DasGatas
@@ -84,7 +87,7 @@ void DeclaraVet(int opc_smenu_vetor)
 				j=0;
 				while(j<len)
 				{
-					*Soma = SomaVet(V[j].Vet, Soma, k, j);
+					Soma = SomaVet(V[j].Vet, Soma, k, j);
 					j++;
 				}
 			} else {printf(":)\n:)\n:)\n");}
