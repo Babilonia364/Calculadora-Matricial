@@ -98,6 +98,7 @@ int smenu_matriz ()
 	{
         case 1:
             printf("\n");
+			DeclaraMat(opc_smenu_matriz);
             break;
         case 2:
             printf("\n");
