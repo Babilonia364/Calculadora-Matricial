@@ -2,11 +2,14 @@
 #include <stdlib.h>
 //Cabecalho com funcoes//
 void menu();
+												// --------- FUNCOES DOS VETORES --------- //
 int* SomaVet(int *V1, int *V2, int *n, int S);
 void DeclaraVet(int opc_smenu_vetor);
-void DeclaraMat(int opc_smenu_matriz);
 int LerVet(int *V1, int *L, int S);
 int LerMat(int **M, int *Lin, int *Col, int Matz);
+												// --------- FUNCOES DAS MATRIZES --------- //
+void DeclaraMat(int opc_smenu_matriz);
+												// --------- ESCOPO DAS FUNCOES VETORES ---------//
 
 struct Vetores 															//Struct para definir N vetores//
 {
@@ -113,6 +116,8 @@ void DeclaraVet(int opc_smenu_vetor)
 	}
 }
 
+												// --------- ESCOPO DAS FUNCOES MATRIZES ---------//
+
 //=== Declarando as Matrizes ===// FEITO POR Twily
 
 void DeclaraMat(int opc_smenu_matriz)
@@ -137,7 +142,7 @@ void DeclaraMat(int opc_smenu_matriz)
 		for(i=0; i<col[j]; i++)
 		{
 			M[j].Mat[i]=malloc(lin[i]*sizeof(int));
-			for(k=0; k<lin[i]; k++)														//Definindo elementos da matriz
+			for(k=0; k<lin[j]; k++)														//Definindo elementos da matriz
 			{
 				printf("  Digite o elemento da linha %d e coluna %d da matriz %d: ", k+1, i+1, j+1);
 				scanf("%d", &M[j].Mat[i][k]);
@@ -151,7 +156,7 @@ void DeclaraMat(int opc_smenu_matriz)
 			i=0;
 			while(i<matz)
 			{
-				LerMat(M[i].Mat, lin, col, i);
+				LerMat(M[i].Mat, lin, col, i);											//Puxando a função ler matrizes
 				i++;
 			}
 			menu();
