@@ -144,15 +144,15 @@ void DeclaraMat(int opc_smenu_matriz)
 		scanf("%d", &M[i].coluna);
 		printf("\n");
 	}
-	for (k=0; k<matz; k++)																//Alocacao dinamica de linhas e colunas
-	{
+	for (k=0; k<matz; k++)																	//Alocacao dinamica de linhas e colunas
+	{																						//M[2][3]
 		M[k].Mat=malloc(M[k].coluna*sizeof(float));
 		for(i=0; i<M[k].coluna; i++)
 		{
 			M[k].Mat[i]=malloc(M[k].linha*sizeof(float));
 			for(j=0; j<M[k].linha; j++)														//Definindo elementos da matriz
 			{
-				printf("  Digite o elemento da linha %d e coluna %d da matriz %d: ", i+1, j+1, k+1);
+				printf("  Digite o elemento da linha %d e coluna %d da matriz %d: ", j+1, i+1, k+1);
 				scanf("%f", &M[k].Mat[i][j]);
 			}
 		}
@@ -184,7 +184,7 @@ int LerMat(float *M, int Lin, int Col, int Matz)
 		printf("|  ");
 		for (ler2=0; ler2<Lin; ler2++)
 		{
-			printf("%f  ", *(M+(ler2*1)+ler1));
+			printf("%3f  ", *(M+(ler1*Col)+ler2));
 		}
 		printf(" |\n");
 	}
