@@ -6,9 +6,11 @@ void menu();
 float* SomaVet(float *V1, float *V2, int n, int n2, int S);
 void DeclaraVet(int opc_smenu_vetor);
 int LerVet(float *V1, int L);
-int LerMat(float *M[], int Lin, int Col, int Matz);
+
 												// --------- FUNCOES DAS MATRIZES --------- //
 void DeclaraMat(int opc_smenu_matriz);
+int LerMat(float *M[], int Lin, int Col);
+float** SomaMat(float *M1[], float *M2[], float *Soma[], int Lin1, int Col1, int Lin2, int Col2, int Matz);
 												// --------- ESCOPO DAS FUNCOES VETORES ---------//
 
 struct Vetores 															//Struct para definir N vetores//
@@ -40,14 +42,16 @@ int LerVet(float *V1, int L) 											//Passa 1 vetor e 1 inteiro para a funca
 
 float* SomaVet(float *V1, float *V2, int n, int n2, int S) 								//Passa 2 vetores e seu tamanho na tela//
 {
+	float *Soma2=malloc(n*sizeof(float));
 	int m;
 	for(m=0; m<n; m++) 
 	{
+		Soma2[m]=V1[m];
 		if(S>=1)
 		{
 			if(n==n2) 													//Faz a soma caso haja 2 vetores e eles sejam de tamanhos iguais//
 			{
-				V2[m]=V1[m]+V2[m];
+				V2[m]=Soma2[m]+V2[m];
 				printf("%f ", V2[m]);
 			} else
 			{								
@@ -56,6 +60,7 @@ float* SomaVet(float *V1, float *V2, int n, int n2, int S) 								//Passa 2 vet
 		}
 	}
 	printf("\n\n");
+	free (Soma2);
 	return V2;
 }
 
@@ -135,6 +140,7 @@ void DeclaraMat(int opc_smenu_matriz)
 	printf("  Digite quantas matrizes voce deseja operar: ");
 	scanf("%d", &matz);
 	struct Matrizes M[matz];
+	struct Matrizes Soma;
 	
 	for(i=0; i<matz; i++)
 	{
@@ -163,8 +169,27 @@ void DeclaraMat(int opc_smenu_matriz)
 			i=0;
 			while(i<matz)
 			{
-				LerMat(M[i].Mat, M[i].linha, M[i].coluna, i);											//Puxando a funcao ler matrizes
+				LerMat(M[i].Mat, M[i].linha, M[i].coluna);									//Puxando a funcao ler matrizes
 				i++;
+			}
+			menu();
+			break;
+			
+		case 3:
+			for (k=1; k<matz; k++)
+			{
+				if(k>=1)
+				{
+					if(M[k].coluna == M[k-1].coluna && M[k].linha==M[k-1].linha)
+					{
+						Soma.Mat=malloc(M[k].coluna*sizeof(float));
+						for(i=0; i<M[k].coluna; i++)
+						{
+							Soma.Mat=malloc(M[k].linha*sizeof(float));
+						}
+						Soma.Mat=SomaMat(M[k-1].Mat, M[k].Mat, Soma.Mat, M[k-1].linha, M[k-1].coluna, M[k].linha, M[k].coluna, k);
+					}
+				}
 			}
 			menu();
 			break;
@@ -176,7 +201,8 @@ void DeclaraMat(int opc_smenu_matriz)
 	}
 }
 
-int LerMat(float *M[], int Lin, int Col, int Matz)
+// Funcao de leitura de matrizes //
+int LerMat(float *M[], int Lin, int Col)
 {
 	int ler1, ler2;
 	for (ler1=0; ler1<Col; ler1++)
@@ -187,5 +213,27 @@ int LerMat(float *M[], int Lin, int Col, int Matz)
 			printf("%3f  ", M[ler1][ler2]);
 		}
 		printf(" |\n");
+	}
+}
+
+//Funcao de soma de matrizes //
+float** SomaMat(float *M1[], float *M2[], float *Soma[], int Lin1, int Col1, int Lin2, int Col2, int Matz)
+{
+	int m, n;
+	for (m=0; m<Col1; m++)
+	{
+		for (n=0; n<Lin1; n++)
+		{
+			printf("| ");
+			Soma[m][n]=M1[m][n];
+			if (Col1==Col2 && Lin1==Lin2)
+			if(Matz>=1)
+			{
+				Soma[m][n]=M2[m][n]+Soma[m][n];
+				printf("%f ", Soma[m][n]);
+			}
+			printf(" |\n");
+		}
+		return Soma;
 	}
 }
