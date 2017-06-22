@@ -1,52 +1,118 @@
 #include <stdio.h>
-#include "CutieMarkCrusaders.h"
-void menu();
-int smenu_vetor();
-int smenu_matriz();
+#include <stdlib.h>
+#include "vetmat.h"
 
-void main()
-{
-	menu ();
+/********************************************************
+ *            UNIVERSIDADE ESTADUAL DO CEARA            *
+ *           CENTRO  DE CIENCIAS E TECNOLOGIA           *
+ *            CURSO DE CIENCIA DA COMPUTACAO            *
+ *    DISCIPLINA  Introducao a Ciencia da Computacao    *
+ *                                                      *
+ *                                     Data: 21/06/2017 *
+ *                                                      *
+ * Professor: Leonardo Sampaio Rocha                    *
+ *                                                      *
+ * Alunos: Alan Pereira de Vasconcelos Junior   1394102 *
+ *         Camila Alves Barbosa                 1394330 *
+ *         Joao Alison de Moraes Silveira       1387122 *
+ *******************************************************/
+
+/*
+   BUGS CONHECIDOS:
+        INSIRA AQUI OS BUGS QUE ENCONTRAR...
+*/
+
+// Area de Declaracao de Funcoes:
+//MEU COMPILADOR FALA QUE ESTOU DECLARANDO DUAS VEZES AS FUNCOES...
+
+void menu();
+int smenu_vet();
+int smenu_mat();
+
+void ret_smenu_vet();
+void ret_smenu_mat();
+
+
+// AREA DA FUNCAO PRINCIPAL:
+
+void main() {
+	menu();
 }
 
-/*MALLOC EU SEI USAR, MAS O COMANDO FREE QUE E BOM... Bom que da 'raquear' uns pc maroto deixando ponteiro aberto hihihihihehehehahahhaha
-Camila e Carlos, fazer subtração vetorial e produto escalar xoxo*/
 
+// (0) Menu Principal FEITO POR SILVEIRAX
+void menu() {
 
-//=== Submenu dos Vetores ===// FEITO POR SILVEIRAX
+    int opc_menu;
 
-int smenu_vetor () 
-{
+    printf("==================================================\n"
+           "||       CALCULADORA VETORIAL E MATRICIAL       ||\n"
+           "==================================================\n"
+           "  (1) Operacoes Vetoriais.\n"
+           "  (2) Operacoes Matriciais.\n"
+           "  (3) Sair.\n"
+           "      Qual operacao deseja executar? ");
+    scanf("%d", &opc_menu);
 
-    // Area de Declaracao de Variaveis:
-
-    int opc_smenu_vetor;
-
-    // Area do Algoritmo:
-
-    printf("==================================================\n");
-    printf("||             OPERACOES  VETORIAIS             ||\n");
-    printf("==================================================\n");
-    printf("  (1) Ler vetores.\n");
-    printf("  (2) Adicao vetorial.\n");
-    printf("  (3) Subtracao vetorial.\n");
-    printf("  (4) Produto escalar.\n");
-    printf("  (5) Produto vetorial.\n");
-    printf("  (6) Voltar ao Menu Principal.\n");
-    printf("  (7) Sair.\n");
-    printf("      Qual operacao deseja executar? ");
-    scanf("%d", &opc_smenu_vetor);
-
-    switch (opc_smenu_vetor) 
-	{
+    switch(opc_menu) {
         case 1:
-			DeclaraVet(opc_smenu_vetor);
             printf("\n");
+            smenu_vet();
             break;
         case 2:
-			DeclaraVet(opc_smenu_vetor);
+            printf("\n");
+            smenu_mat();
+            break;
+        case 3:
+            printf("      Obrigado por utilizar este programa!\n");
+            break;
+        default:
+            printf("\7      Opcao invalida. Digite outra opcao.\n\n");
+            menu();
+    }
+}
+
+
+// (1) Submenu dos Vetores FEITO POR SILVEIRAX
+int smenu_vet() {
+
+    int opc_smenu_vet;
+
+    printf("==================================================\n"
+           "||             OPERACOES  VETORIAIS             ||\n"
+           "==================================================\n"
+           "  (1) Inserir vetores.\n"
+           "  (2) Exibir vetores inseridos.\n"
+           "  (3) Adicao vetorial.\n"
+           "  (4) Subtracao vetorial.\n"
+           "  (5) Produto de um vetor por um numero real.\n"
+           "  (6) Produto escalar entre vetores.\n"
+           "  (7) Norma vetorial.\n"
+           "  (8) Voltar ao Menu Principal.\n"
+           "  (9) Sair.\n"
+           "      Qual operacao deseja executar? ");
+    scanf("%d", &opc_smenu_vet);
+    printf("\n");
+
+    switch (opc_smenu_vet) {
+        case 1:
+            printf("==================================================\n"
+                   "||               INSERIR  VETORES               ||\n"
+                   "==================================================\n");
+			InsVet(opc_smenu_vet);
+            ret_smenu_vet();
             printf("\n");
             break;
+
+        case 2:
+            printf("==================================================\n"
+                   "||              VETORES  INSERIDOS              ||\n"
+                   "==================================================\n");
+            InsVet(opc_smenu_vet);
+            ret_smenu_vet();
+            printf("\n");
+            break;
+
         case 3:
             printf("\n");
             break;
@@ -63,42 +129,38 @@ int smenu_vetor ()
             printf("      Obrigado por utilizar este programa!\n");
             break;
         default:
-            printf("      Opcao invalida. Digite outra opcao.\n");
-            smenu_vetor();
+            printf("\7      Opcao invalida. Digite outra opcao.\n \n");
+            smenu_vet();
     }
 }
 
-//=== Submenu das Matrizes ===// FEITO POR SILVEIRAX
 
-int smenu_matriz () 
-{
+// (2) Submenu das Matrizes FEITO POR SILVEIRAX
+int smenu_mat() {
 
-    // Area de Declaracao de Variaveis:
+    int opc_smenu_mat;
 
-    int opc_smenu_matriz;
+    printf("==================================================\n"
+           "||             OPERACOES MATRICIAIS             ||\n"
+           "==================================================\n"
+           "  (1) Inserir matrizes.\n"
+           "  (2) Exibir matrizes inseridas.\n"
+           "  (3) Verificador de matrizes especiais.\n"
+           "  (4) Adicao matricial.\n"
+           "  (5) Subtracao matricial.\n"
+           "  (6) Produto de uma matriz por um numero real.\n"
+           "  (7) Produto matricial.\n"
+           "  (8) Determinante.\n"
+           "  (9) Voltar ao Menu Principal.\n"
+           "  (0) Sair.\n"
+           "      Qual operacao deseja executar? ");
+    scanf("%d", &opc_smenu_mat);
+    printf("\n");
 
-    // Area do Algoritmo:
-
-    printf("==================================================\n");
-    printf("||             OPERACOES MATRICIAIS             ||\n");
-    printf("==================================================\n");
-    printf("  (1) Ler matrizes.\n");
-    printf("  (2) Verificador de matrizes especiais.\n");
-    printf("  (3) Adicao matricial.\n");
-    printf("  (4) Subtracao matricial.\n");
-    printf("  (5) Produto matricial.\n");
-    printf("  (6) Divisao matricial.\n");
-    printf("  (7) Determinantes.\n");
-    printf("  (8) Voltar ao Menu Principal.\n");
-    printf("  (9) Sair.\n");
-    printf("      Qual operacao deseja executar? ");
-    scanf("%d", &opc_smenu_matriz);
-
-    switch (opc_smenu_matriz) 
-	{
+    switch (opc_smenu_mat) {
         case 1:
             printf("\n");
-			DeclaraMat(opc_smenu_matriz);
+			InsMat(opc_smenu_mat);
             break;
         case 2:
             printf("\n");
@@ -119,50 +181,32 @@ int smenu_matriz ()
             printf("\n");
             break;
         case 8:
+            printf("\n");
             menu();
             break;
-        case 9:
+        case 0:
             printf("      Obrigado por utilizar este programa!\n");
             break;
         default:
-            printf("      Opcao invalida. Digite outra opcao.\n");
-            smenu_matriz();
+            printf("\7      Opcao invalida. Digite outra opcao.\n\n");
+            menu();
     }
 }
 
-//=== Menu Principal ===// FEITO POR SILVEIRAX
 
-void menu () 
-{
 
-    // Area de Declaracao de Variaveis:
+// FUNCOES ADICIONAIS:
 
-    int opc_menu;
+void ret_smenu_vet () {
+    printf("  Pressione ENTER para voltar ao menu anterior.");
+    getchar();
+    getchar();
+    smenu_vet();
+}
 
-    // Area do Algoritmo:
-
-    printf("==================================================\n");
-    printf("||       CALCULADORA VETORIAL E MATRICIAL       ||\n");
-    printf("==================================================\n");
-    printf("  (1) Operacoes Vetoriais.\n");
-    printf("  (2) Operacoes Matriciais.\n");
-    printf("  (3) Sair.\n");
-    printf("      Qual operacao deseja executar? ");
-    scanf("%d", &opc_menu);
-
-    switch(opc_menu) 
-	{
-        case 1:
-            smenu_vetor();
-            break;
-        case 2:
-            smenu_matriz();
-            break;
-        case 3:
-            printf("      Obrigado por utilizar este programa!\n");
-            break;
-        default:
-            printf("      Opcao invalida. Digite outra opcao.\n");
-            menu();
-    }
+void ret_smenu_mat () {
+    printf("  Pressione ENTER para voltar ao menu anterior.");
+    getchar();
+    getchar();
+    smenu_mat();
 }
