@@ -20,6 +20,7 @@
 // AREA DE DECLARACAO DE FUNCOES:
 
 void menu();
+int smenu_mat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz);
 
 // FUNCOES DOS VETORES:
 
@@ -30,8 +31,12 @@ float* SomaVet(float *V1, float *V2, int n, int n2, int S);
 
 // FUNCOES DAS MATRIZES:
 
-void InsMat(int opc_smenu_mat);
-int ExiMat(float *M, int Lin, int Col, int Matz);
+void FillLinCol(int *Lin, int *Col, int Matz);
+void InsMat();
+void ExiMat(float *M[], int Lin, int Col);
+void AuxSoma(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz);
+float** FillMat(float *M[], int Lin, int Col, int Matz);
+float** ADDMat(float *M1[], float *M2[], int Lin2, int Col2);
 
 
 
@@ -178,69 +183,118 @@ float* SomaVet(float *V1, float *V2, int n, int n2, int S) {
 
 /* ESCOPO DAS FUNCOES COM MATRIZES */
 
+//Funcao para mudar o valor das linhas e colunas das matrizes da funcao principal
+void FillLinCol(int *Lin, int *Col, int Matz)
+{
+	int Linha, Coluna;
+	printf("\n  Digite o numero de linhas de sua matriz %d: ", Matz + 1);
+	scanf("%d", &Linha);
+	printf("\n  Digite o numero de colunas de sua matriz %d: ", Matz + 1);
+	scanf("%d", &Coluna);
+	printf("\n");
+	*Lin=Linha;					//Fazendo isso, podemos mudar o valor das linhas e colunas sem precisar dar return, ou seja
+	*Col=Coluna;				//Uma funcao void com 2 returns, MAGIA NEGRA!!!
+}
+
 // Declarando as Matrizes FEITO POR Twily:
 
-void InsMat(int opc_smenu_mat) {            // Declarando a variavel de quantidade de matriz 'matz' e possiveis contadores
-
-	int matz, i, j, k;
-
-	printf("  Digite quantas matrizes voce deseja operar: ");
-	scanf("%d", &matz);
-
-	struct Matrizes M[matz];
-
-	for (i = 0; i < matz; i++) {
-		printf("\n  Digite o numero de linhas de sua matriz %d: ", i + 1);
-		scanf("%d", &M[i].linha);
-		printf("\n  Digite o numero de colunas de sua matriz %d: ", i + 1);
-		scanf("%d", &M[i].coluna);
-		printf("\n");
-	}
-
-// Alocacao dinamica de linhas e colunas
-
-	for (k = 0; k < matz; k++) {
-		M[k].Mat = malloc(M[k].coluna * sizeof(float));
-		for (i = 0; i < M[k].coluna; i++) {
-			M[k].Mat[i] = malloc(M[k].linha * sizeof(float));
-
-			// Definindo elementos da matriz
-
-			for(j = 0; j < M[k].linha; j++) {
-				printf("  Digite o elemento da linha %d e coluna %d da matriz %d: ", i+1, j+1, k+1);
-				scanf("%f", &M[k].Mat[i][j]);
-			}
+float** FillMat(float *M[], int Lin, int Col, int Matz) {					//Funcao de preenchimento de matrizes, so existe porque serve para N vetores
+																				// Declarando contadores
+	int i, j;
+	float **Mat;
+																			// Alocacao dinamica de linhas e colunas
+	Mat = malloc(Col * sizeof(float));
+	for (i = 0; i < Col; i++) 
+	{
+		Mat[i] = malloc(Lin * sizeof(float));
+		for(j = 0; j < Lin; j++) 
+		{
+			printf("  Digite o elemento da linha %d e coluna %d da matriz %d: ", i+1, j+1, Matz+1);
+			scanf("%f", &Mat[i][j]);
+			M[i][j]=Mat[i][j];												//Usando a matriz recem criada para preencher a matriz antiga
 		}
 	}
+	free(Mat);
+	return M;
+}
 
-	switch (opc_smenu_mat) {      // (Puxar a funcao ler matrizes)
-		case 1:
-			i = 0;
-			while(i < matz) {
-				ExiMat(&M[i].Mat[0][0], M[i].linha, M[i].coluna, i);
-				i++;
-			}
-			menu();
-			break;
+void InsMat()			//Agora essa funcao chama o submenu 2, assim, os structs com os vetores ficam fora das funcoes e podem ser chamados pelo submenu dos
+{						//vetores sem perdermos os vetores ou sem eles serem resetados
 
-		default:
-			printf(":)\n:)\n:)\n");
-			menu();
-			break;
+	int matz=2, i, j, k;						//matz sera o numero de matrizes existentes
+	int *lin, *col;								//Declarando ponteiros que apontarao para linha e coluna
+	struct Matrizes M[matz];
+	printf("\n");
+	for (k=0; k<matz; k++)
+	{
+		lin=&M[k].linha;
+		col=&M[k].coluna;
+		FillLinCol(lin, col, k);									//Definindo os valores das linhas e colunas
+		M[k].Mat = malloc(M[k].coluna*sizeof(float));
+		for (i = 0; i < M[k].coluna; i++) 
+		{
+			M[k].Mat[i] = malloc(M[k].linha * sizeof(float));
+		}
+		M[k].Mat=FillMat(M[k].Mat, M[k].linha, M[k].coluna, k);		//Preenchendo a matriz
 	}
+	smenu_mat(M[0].Mat, M[1].Mat, M[0].linha, M[0].coluna, M[1].linha, M[1].coluna, matz);
 }
 
 // Exibir Matrizes FEITO POR Twily
 
-int ExiMat(float *M, int Lin, int Col, int Matz) {
-
-	int ler1, ler2;
-
+void ExiMat(float *M[], int Lin, int Col) 		//Recebe a matriz, sua linha e sua coluna
+{
+	int ler1, ler2;								//Variaveis para percorrer a matriz
+	printf("\n");
 	for (ler1 = 0; ler1 < Col; ler1++) {
 		printf("|  ");
 		for (ler2 = 0; ler2 < Lin; ler2++) {
-			printf("%f  ", *(M + (ler2 * 1) + ler1));
+			printf("%f  ", M[ler1][ler2]);
 		}
 		printf(" |\n");
+	}
+}
+
+
+//Funcao de soma de matrizes //
+float** ADDMat(float *M1[], float *M2[], int Lin2, int Col2)						//Funcao que executa a soma de N vetores, mas no trabalho vai executar so 2 :)
+{			//Recebe Matriz Soma da funcao auxiliar, matriz 2 declarada na funcao de declaracao, linha da matriz 2 e coluna da matriz 2 e a contadora das N matrizes
+	int m, n;
+	for (m=0; m<Col2; m++)
+	{
+		printf("| ");
+		for (n=0; n<Lin2; n++)
+		{
+			M1[m][n]=M2[m][n]+M1[m][n];
+			printf("%f ", M1[m][n]);
+		}
+		printf(" |\n");
+	}
+	return M1;
+}
+
+void AuxSoma(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz)	//Funcao para auxiliar a soma criando uma variavel que vai receber a soma
+{			//Recebe Matriz 1 e 2 declaradas na funcao de declaracao, linhas e colunas das respectivas matrizes, alem da quantidade das N matrizes existentes
+	if(Col1 == Col2 && Lin1 == Lin2)
+	{
+		struct Matrizes Soma;	//Cria um struct soma para poder receber os valores de M1, que e outro struc soma, se fosse float tentando receber de um
+		int m, n;				//float de dentro do struct daria erro, nao sei o porque
+		Soma.Mat=malloc(Col1*sizeof(float));
+		for(m=0; m<Col1; m++)
+		{
+			Soma.Mat[m]=malloc(Lin1*sizeof(float));
+		}
+		for(m=0; m<Col1; m++)
+		{
+			for(n=0; n<Lin1; n++)
+			{
+				Soma.Mat[m][n]=M1[m][n];
+			}
+		}
+		Soma.Mat=ADDMat(Soma.Mat, M2, Lin2, Col2);
+		free(Soma.Mat);
+	} else
+	{
+		printf("Matrizes de tamanhos invalidos, reescreva a matriz e tente novamente");
 	}
 }
