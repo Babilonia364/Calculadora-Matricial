@@ -37,6 +37,7 @@ void Sair(float *M1[], float *M2[]);
 void ExiMat(float *M[], int Lin, int Col);
 void AuxSoma(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz);
 void MatPlusReal(float *M[], int Lin, int Col);
+void Determinante(float *M[], int Lin, int Col);
 float** FillMat(float *M[], int Lin, int Col, int Matz);
 float** ADDMat(float *M1[], float *M2[], int Lin2, int Col2);
 
@@ -58,6 +59,9 @@ struct Matrizes {
 	int linha, coluna;
 };
 
+struct Determinante {
+	float soma, multi, det;
+};
 
 
 /* (1) FUNCOES COM VETORES */
@@ -323,4 +327,85 @@ void MatPlusReal(float *M[], int Lin, int Col)
 		}
 		printf("	|\n");
 	}
+}
+
+void Determinante(float *M[], int Lin, int Col)
+{
+	if(Lin==Col)
+	{
+		if(Lin<=3)
+		{
+			switch(Lin)
+			{
+				case 1:
+					printf("A determinante e: %f\n", M[0][0]);
+					break;
+				case 2:
+				{
+					int x, y, n;																		//Contadores
+					struct Determinante Det[2];
+					for(n=0; n<2; n++)																	//0 diagonal principal, 1 diagonal secundaria
+					{
+						Det[n].multi=1;
+						Det[n].soma=0;
+					}
+					for(n=0; n<1; n++)																	//Inicio do algoritimo de calculo de matriz 2x2
+					{
+						for(x=0; x<2; x++)
+						{
+							y=(x+n)%2;														//O calculo da variavel y e circular, ou seja, sempre que y for 2
+							Det[0].multi=Det[0].multi*M[x][y];								//O mod atribuira o valor dele a 0, assim podemos percorrer toda
+						}																	//A matriz.
+						Det[0].soma=Det[0].soma+Det[0].multi;
+					}
+					for(n=1; n<2; n++)
+					{
+						for(x=0; x<2; x++)
+						{
+							y=(x+n)%2;
+							Det[1].multi=Det[1].multi*M[y][x];
+						}
+						Det[1].soma=Det[1].soma+Det[1].multi;
+					}
+					Det[0].det=Det[0].soma-Det[1].soma;
+					printf("A determinante e: %f\n", Det[0].det);
+					break;
+				}
+				case 3:
+				{
+					int x, y, n;																		//Contadores
+					struct Determinante Det[2];
+					for(n=0; n<2; n++)																	//0 diagonal principal, 1 diagonal secundaria
+					{
+						Det[n].multi=1;
+						Det[n].soma=0;
+					}
+					for(n=0; n<3; n++)																	//Inicio do algoritimo de calculo de matriz 2x2
+					{
+						for(x=0; x<3; x++)
+						{
+							y=(x+n)%3;														//O calculo da variavel y e circular, ou seja, sempre que y for 2
+							Det[0].multi=Det[0].multi*M[x][y];								//O mod atribuira o valor dele a 0, assim podemos percorrer toda
+						}																	//A matriz.
+						Det[0].soma=Det[0].soma+Det[0].multi;
+					}
+					for(n=2; n<5; n++)
+					{
+						for(x=0; x<3; x++)
+						{
+							y=(n-x)%3;
+							Det[1].multi=Det[1].multi*M[y][x];
+						}
+						Det[1].soma=Det[1].soma+Det[1].multi;
+					}
+					Det[0].det=Det[0].soma-Det[1].soma;
+					printf("A determinante e: %f\n", Det[0].det);
+					break;
+				}
+				default:
+					printf("Erro #001");
+					break;
+			}
+		}else {printf("Matriz quadrada maior que 3 elementos\nO programa nao conseguira calcular a determinante\n");}
+	} else {printf("Nao e uma matriz quadrada\nO programa nao conseguira calcular a determinante\n");}
 }
