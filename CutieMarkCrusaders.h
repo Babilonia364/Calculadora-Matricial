@@ -20,13 +20,17 @@
 // AREA DE DECLARACAO DE FUNCOES:
 
 void menu();
+int smenu_vet(float *V1, float *V2, int Lin1, int Lin2);
 int smenu_mat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz);
 
 // FUNCOES DOS VETORES:
 
-void InsVet(int opc_smenu_vet);
+void InsVet();
 void ExiVet(float *V1, int L);
-float* SomaVet(float *V1, float *V2, int n, int n2, int S);
+void SairVet(float *V1, float *V2);
+void SomaVet(float *V1, float *V2, int Lin1, int Lin2);
+void SubVet(float *V1, float *V2, int Lin1, int Lin2);
+void VetPlusReal (float *V1, int Lin1);
 
 
 // FUNCOES DAS MATRIZES:
@@ -38,6 +42,7 @@ void ExiMat(float *M[], int Lin, int Col);
 void AuxSoma(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz);
 void MatPlusReal(float *M[], int Lin, int Col);
 void Determinante(float *M[], int Lin, int Col);
+void Simetrica(float *M[], int Lin, int Col);
 float** FillMat(float *M[], int Lin, int Col, int Matz);
 float** ADDMat(float *M1[], float *M2[], int Lin2, int Col2);
 
@@ -68,39 +73,20 @@ struct Determinante {
 
 // (1.1) Inserir Vetores FEITO POR Twily
 
-void InsVet(int opc_smenu_vet) {
+void InsVet() {
 
     // Declarar quantos vetores se quer 'len' e variaveis de controle i e j.
 
-	int len, i = 0, j = 0;
-
-	printf("  Insira o numero de vetores a se operar: ");
-	scanf("%d", &len);
-	printf("\n");
+	int len=2, i = 0, j = 0;
 
     // Vetorizar o struct e criar quantos vetores se desejar.
 
 	struct Vetores V[len];
-	struct Vetores Soma;
 
-	for (i = 0; i < len; i++) {
+	for (i = 0; i < len; i++) {												//Declarando o numero de linhas dos 2 vetores
 		printf("  Insira o numero de coordenadas do vetor %d: ", i + 1);
 		scanf("%d", &V[i].linha);
-
-    // Se for a segunda vez que o laco roda
-
-		if(i >= 1) {
-			if (V[i].linha>=V[i-1].linha) {
-                Soma.linha=V[i].linha;
-			}
-			else {
-                Soma.linha=V[i-1].linha;
-            }
-		}
 	}
-
-	Soma.Vet = malloc(Soma.linha * sizeof(float));  // Declarando o vetor que armazenara a soma
-
     printf("\n");
 	for (j = 0; j < len; j++) {
 		V[j].Vet = malloc(V[j].linha * sizeof(float));
@@ -110,6 +96,8 @@ void InsVet(int opc_smenu_vet) {
 		}
 	}
 	printf("\n");
+	smenu_vet(V[0].Vet, V[1].Vet, V[0].linha, V[1].linha);
+}
 
 
 // (1.2) Exibir Vetores Inseridos:
@@ -126,66 +114,88 @@ void ExiVet(float *V1, int L) {
 	for (m = 0; m < L; m++) {
 		printf("%.1f ", V1[m]);
 	}
-	printf(")\n \n");
+	printf(") \n");
 }
 
 // Soma Vetorial FEITO POR Twily:
 
     // Passa 2 vetores e seu tamanho na tela:
 
-float* SomaVet(float *V1, float *V2, int n, int n2, int S) {
-
-	float *Soma2 = malloc(n * sizeof(float));
-	int m;
-
-	for (m = 0; m < n; m++) {
-		Soma2[m] = V1[m];
-		if(S >= 1) {
-
-			// Faz a soma caso haja 2 vetores e eles sejam de tamanhos iguais
-
-			if (n == n2) {
-				V2[m] = Soma2[m] + V2[m];
-				printf("%f ", V2[m]);
-			}
-			else {
-				printf("\7      Vetores de tamanho diferentes. Digite outra opcao.\n \n");
-			}
+void SomaVet(float *V1, float *V2, int Lin1, int Lin2) {
+	if (Lin1 == Lin2) {		// Faz a soma caso haja 2 vetores e eles sejam de tamanhos iguais
+		float *Soma2 = malloc(Lin1 * sizeof(float));
+		int m;
+		printf("(  ");
+		for (m = 0; m < Lin1; m++) 
+		{
+			Soma2[m] = V1[m]+V2[m];
+			printf("%f ", Soma2[m]);
 		}
-	}
-	printf("\n\n");
-	free (Soma2);
-	return V2;
+		printf(" )\n");
+		free (Soma2);
+	} else {printf("Quantidade de elementos incompatível, reescreva os vetores e tente novamente\n");}
 }
 
-
-// SWITCH PARA PUXAR FUNÇÕES DA BIBLIOTECA --- FEITO POR Twily:
-
-	switch (opc_smenu_vet){
-		case 1:
-			j = 0;
-			while (j < len) {             // Puxa a funcao ler vetores e printa-los na tela
-			ExiVet(V[j].Vet, V[j].linha);
-			j++;
-			}
-			break;
-		case 2:
-		    break;
-		case 3:
-			if (len >= 2) {
-				j = 0;
-				while(j < len) {
-					Soma.Vet = SomaVet(V[j].Vet, Soma.Vet, V[j].linha, Soma.linha, j);				// Puxa a função soma
-					j++;
+//Subtracao vetorial, análogo a soma
+void SubVet(float *V1, float *V2, int Lin1, int Lin2)
+{
+	if(Lin1==Lin2)
+	{
+		float *Subt=malloc(Lin1*sizeof(float));
+		int m, n, lac=0;
+		printf("Digite 1 para subtrair V2 de V1\nDigite 2 para subtrair V1 de V2\nDigite 3 para sair\n");
+		scanf("%d", &n);
+		while(lac!=1)
+		{
+			printf("( ");
+			for(m=0; m<Lin1; m++)
+			{
+				switch(n)
+				{
+				case 1:
+				{
+					Subt[m]=V1[m]-V2[m];
+					printf("%f ", Subt[m]);
+					lac = 1;
+					break;
 				}
-			} else {printf(":)\n:)\n:)\n");}
-			break;
-		default:
-			printf("\7      Opcao invalida. Digite outra opcao.\n \n");
-			break;
-	}
+				case 2:
+				{
+					Subt[m]=V2[m]-V1[m];
+					printf("%f", Subt[m]);
+					lac = 1;
+					break;
+				}
+				case 3:
+					lac = 1;
+					break;
+				default:
+					printf(" Operacao invalida ");
+					break;
+				}
+			}
+			printf(" )\n");
+		}
+	} else {printf("Quantidade de elementos incompatível, reescreva os vetores e tente novamente\n");}
 }
 
+void VetPlusReal (float *V1, int Lin1)
+{
+	int m;
+	float r;
+	printf("(  ");
+	for(m=0; m<Lin1; m++)
+	{
+		printf("%f ", V1[m]);
+	}
+	printf(" )\n");
+}
+
+void SairVet(float *V1, float *V2)
+{
+	free(V1);
+	free(V2);
+}
 
 /* ESCOPO DAS FUNCOES COM MATRIZES */
 
@@ -408,4 +418,26 @@ void Determinante(float *M[], int Lin, int Col)
 			}
 		}else {printf("Matriz quadrada maior que 3 elementos\nO programa nao conseguira calcular a determinante\n");}
 	} else {printf("Nao e uma matriz quadrada\nO programa nao conseguira calcular a determinante\n");}
+}
+
+void Simetrica(float *M[], int Lin, int Col)
+{
+	if (Lin == Col)						//Verifica se a matriz e quadrada
+	{
+		int n, m, cont=0;
+		for(m=0; m<Lin; m++)
+		{
+			for(n=0; n<Col; n++)
+			{
+				if(M[m][n]==M[n][m])	//Percorre a matriz toda contando quantos elementos iguais ela tem
+				{
+					cont++;
+				}
+			}
+		}
+		if(cont==(Lin*Col))
+		{
+			printf("Matriz simetrica");
+		}else {printf("Nao e simetrica");}
+	} else {printf("Nao e simetrica pois nao e quadrada\n");}
 }
