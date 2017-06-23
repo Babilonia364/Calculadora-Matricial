@@ -3,5 +3,6 @@ Projeto de conclusão de disciplina de Introdução a Ciência da Computação o
 
 
 -=AVISOS=-
-A parte de declaração de matriz está bugada, resolveirei amanhã.
-Camila, Alison e Carlos, criem um github POR FAVOR, ESTOU PEDINDO!!!
+Vetores: Falta produto escalar entre 2 vetores
+
+Matries: Falta calcular a transposta da matriz, multiplicar matrizes e arrumar o bug no algoritimo da determinante da 3x3
