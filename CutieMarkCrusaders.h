@@ -33,8 +33,10 @@ float* SomaVet(float *V1, float *V2, int n, int n2, int S);
 
 void FillLinCol(int *Lin, int *Col, int Matz);
 void InsMat();
+void Sair(float *M1[], float *M2[]);
 void ExiMat(float *M[], int Lin, int Col);
 void AuxSoma(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz);
+void MatPlusReal(float *M[], int Lin, int Col);
 float** FillMat(float *M[], int Lin, int Col, int Matz);
 float** ADDMat(float *M1[], float *M2[], int Lin2, int Col2);
 
@@ -295,6 +297,30 @@ void AuxSoma(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, i
 		free(Soma.Mat);
 	} else
 	{
-		printf("Matrizes de tamanhos invalidos, reescreva a matriz e tente novamente");
+		printf("Matrizes de tamanhos invalidos, reescreva a matriz e tente novamente\n");
+	}
+}
+
+void Sair(float *M1[], float *M2[])
+{
+	free (M1);							//Desalocando espaço na memoria que as matrizes sugavam, essas suguinhas
+	free (M2);
+}
+
+void MatPlusReal(float *M[], int Lin, int Col)
+{
+	int m, n;
+	float r;												//Declarando numero real
+	printf("Digite o numero real que vc quer operar: ");
+	printf("\n");
+	scanf("%f", &r);
+	for(m=0; m<Col; m++)
+	{
+		printf("|	");
+		for(n=0; n<Lin; n++)
+		{
+			printf("%f ", M[m][n]*r);
+		}
+		printf("	|\n");
 	}
 }
