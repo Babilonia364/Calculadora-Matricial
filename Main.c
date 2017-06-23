@@ -27,10 +27,10 @@
 
 void menu();
 int smenu_vet();
-int smenu_mat();
+int smenu_mat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz);
 
 void ret_smenu_vet();
-void ret_smenu_mat();
+void ret_smenu_mat (float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz);
 
 
 // AREA DA FUNCAO PRINCIPAL:
@@ -61,7 +61,7 @@ void menu() {
             break;
         case 2:
             printf("\n");
-            smenu_mat();
+            InsMat();
             break;
         case 3:
             printf("      Obrigado por utilizar este programa!\n");
@@ -108,7 +108,7 @@ int smenu_vet() {
             printf("==================================================\n"
                    "||              VETORES  INSERIDOS              ||\n"
                    "==================================================\n");
-            InsVet(opc_smenu_vet);
+            InsVet(opc_smenu_vet); //Ver explicacao na biblioteca
             ret_smenu_vet();
             printf("\n");
             break;
@@ -136,7 +136,7 @@ int smenu_vet() {
 
 
 // (2) Submenu das Matrizes FEITO POR SILVEIRAX
-int smenu_mat() {
+int smenu_mat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz) {
 
     int opc_smenu_mat;
 
@@ -160,16 +160,21 @@ int smenu_mat() {
     switch (opc_smenu_mat) {
         case 1:
             printf("\n");
-			InsMat(opc_smenu_mat);
+			InsMat(); //Declara os vetores todos de novo
             break;
         case 2:
-            printf("\n");
+			printf("\n");
+			ExiMat(M1, Lin1, Col1);
+			ExiMat(M2, Lin2, Col2);
+			ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
             break;
         case 3:
             printf("\n");
             break;
         case 4:
             printf("\n");
+			AuxSoma(M1, M2, Lin1, Col1, Lin2, Col2, Matz);
+			ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
             break;
         case 5:
             printf("\n");
@@ -204,9 +209,9 @@ void ret_smenu_vet () {
     smenu_vet();
 }
 
-void ret_smenu_mat () {
+void ret_smenu_mat (float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz) {
     printf("  Pressione ENTER para voltar ao menu anterior.");
     getchar();
     getchar();
-    smenu_mat();
+    smenu_mat(M1, M2, Lin1, Col1, Lin2, Col2, Matz);
 }
