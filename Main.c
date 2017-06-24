@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "CutieMarkCrusaders.h"
+#include "ICCCrusaders.h"
 
 /********************************************************
  *            UNIVERSIDADE ESTADUAL DO CEARA            *
@@ -8,7 +8,7 @@
  *            CURSO DE CIENCIA DA COMPUTACAO            *
  *    DISCIPLINA  Introducao a Ciencia da Computacao    *
  *                                                      *
- *                                     Data: 21/06/2017 *
+ *                                     Data: 25/06/2017 *
  *                                                      *
  * Professor: Leonardo Sampaio Rocha                    *
  *                                                      *
@@ -19,11 +19,11 @@
 
 /*
    BUGS CONHECIDOS:
-        INSIRA AQUI OS BUGS QUE ENCONTRAR...
+        1 - SUBTRACAO E NUMERO REAL QUANDO DIGITADOS opcao invalida bugam...
 */
 
-// Area de Declaracao de Funcoes:
-//MEU COMPILADOR FALA QUE ESTOU DECLARANDO DUAS VEZES AS FUNCOES...
+
+// AREA DE DECLARACAO DAS FUNCOES:
 
 void menu();
 int smenu_vet(float *V1, float *V2, int Lin1, int Lin2);
@@ -40,7 +40,9 @@ void main() {
 }
 
 
-// (0) Menu Principal FEITO POR SILVEIRAX
+
+// (0) MENU PRINCIPAL
+
 void menu() {
 
     int opc_menu;
@@ -56,11 +58,17 @@ void menu() {
 
     switch(opc_menu) {
         case 1:
-            printf("\n");
+            printf("\n"
+                   "==================================================\n"
+                   "         INSIRA  OS  DADOS  DE 2 VETORES:         \n"
+                   "==================================================\n");
             InsVet();
             break;
         case 2:
-            printf("\n");
+            printf("\n"
+                   "==================================================\n"
+                   "         INSIRA OS  DADOS  DE 2 MATRIZES:         \n"
+                   "==================================================\n");
             InsMat();
             break;
         case 3:
@@ -73,7 +81,9 @@ void menu() {
 }
 
 
-// (1) Submenu dos Vetores FEITO POR SILVEIRAX
+
+// (1) SUBMENU DOS VETORES
+
 int smenu_vet(float *V1, float *V2, int Lin1, int Lin2) {
 
     int opc_smenu_vet;
@@ -107,47 +117,62 @@ int smenu_vet(float *V1, float *V2, int Lin1, int Lin2) {
         case 2:
             printf("==================================================\n"
                    "||              VETORES  INSERIDOS              ||\n"
-                   "==================================================\n");
+                   "==================================================\n"
+                   "  Os Vetores inseridos foram:                     \n");
             ExiVet(V1, Lin1);
 			ExiVet(V2, Lin2);
+            printf("\n");
             ret_smenu_vet(V1, V2, Lin1, Lin2);
             printf("\n");
             break;
 
         case 3:
-            printf("\n");
-			SomaVet(V1, V2, Lin1, Lin2);
+            printf("==================================================\n"
+                   "||                ADICAO VETORIAL               ||\n"
+                   "==================================================\n"
+                   "  A soma dos Vetores resulta em:                  \n");
+			AddVet(V1, V2, Lin1, Lin2);
 			ret_smenu_vet(V1, V2, Lin1, Lin2);
+			printf("\n");
             break;
         case 4:
-            printf("\n");
+            printf("==================================================\n"
+                   "||              SUBTRACAO VETORIAL              ||\n"
+                   "==================================================\n"
+                   "  A subtracao dos Vetores resulta em:             \n");
 			SubVet(V1, V2, Lin1, Lin2);
 			ret_smenu_vet(V1, V2, Lin1, Lin2);
-            break;
-        case 5:
-		{
 			printf("\n");
-			int op=0, lac=0;
-			printf("Digite 1 para operar o Vetor 1 com um real\nDigite 2 para operar o Vetor 2 com um real\nDigite 3 para sair");
+            break;
+        case 5: {
+            printf("==================================================\n"
+                   "||       PRODUTO DE VETOR POR NUMERO REAL       ||\n"
+                   "==================================================\n"
+                   "  A multiplicacao do Vetor por um numero real e:  \n");
+
+			int op = 0, lac = 0;
+
+			printf("  (1) Operar o Vetor 1 com um numero real.\n"
+                   "  (2) Operar o Vetor 2 com um numero real.\n"
+                   "  (3) Retornar ao menu anterior.          \n"
+                   "  Qual operacao deseja executar? ");
 			scanf("&d", &op);
-			while(lac!=1)
-			{
-				switch(op)
-				{
+			while(lac != 1) {
+				switch(op) {
 					case 1:
-						VetPlusReal (V1, Lin1);
-						lac=1;
+						VetXReal (V1, Lin1);
+						lac = 1;
 						break;
 					case 2:
-						VetPlusReal (V2, Lin2);
-						lac=1;
+						VetXReal (V2, Lin2);
+						lac = 1;
 						break;
 					case 3:
-						lac=1;
+						lac = 1;
 						break;
 					default:
-						printf("Opcao invalida\n");
-						lac=1;
+						printf("  Opcao invalida.\n");
+						lac = 1;
 						break;
 				}
 			}
@@ -155,11 +180,11 @@ int smenu_vet(float *V1, float *V2, int Lin1, int Lin2) {
             break;
 		}
         case 8:
-			SairVet(V1, V2);
+	    SairVet(V1, V2);
             menu();
             break;
         case 9:
-			SairVet(V1, V2);
+	    SairVet(V1, V2);
             printf("      Obrigado por utilizar este programa!\n");
             break;
         default:
@@ -169,7 +194,9 @@ int smenu_vet(float *V1, float *V2, int Lin1, int Lin2) {
 }
 
 
-// (2) Submenu das Matrizes FEITO POR SILVEIRAX
+
+// (2) SUBMENU DAS MATRIZES
+
 int smenu_mat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz) {
 
     int opc_smenu_mat;
@@ -193,128 +220,154 @@ int smenu_mat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, 
 
     switch (opc_smenu_mat) {
         case 1:
-            printf("\n");
-			InsMat(); //Declara os vetores todos de novo
+	    printf("==================================================\n"
+                   "||               INSERIR MATRIZES               ||\n"
+                   "==================================================\n");
+	    InsMat();         //  Declara os vetores todos de novo.
             break;
         case 2:
-			printf("\n");
-			ExiMat(M1, Lin1, Col1);
-			ExiMat(M2, Lin2, Col2);
-			ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
+            printf("==================================================\n"
+                   "||              MATRIZES INSERIDAS              ||\n"
+                   "==================================================\n"
+                   "  As Matrizes inseridas foram:                    \n");
+	    ExiMat(M1, Lin1, Col1);
+	    ExiMat(M2, Lin2, Col2);
+	    ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
             break;
-        case 3:
-		{
-            printf("\n");
-			int op=0, lac=0;							//Variaveis de controle
-			printf("\n");
-			printf("Digite 1 para operar a matriz 1\nDigite 2 para operar a matriz 2\nDigite 3 para retornar\n");
-			scanf("%d", &op);
-			while(lac!=1)
-			{
-				switch (op)
-				{
-					case 1:
-						Simetrica(M1, Lin1, Col1);
-						lac=1;
-						break;
-					case 2:
-						Simetrica(M2, Lin2, Col2);
-						lac=1;
-						break;
-					case 3:
-						lac =1;
-						break;
-					default:
-						printf("Operacao Invalida\n");
-						lac =1;
-						break;
-				}
+        case 3: {
+            printf("==================================================\n"
+                   "||         VERIFICAR MATRIZES ESPECIAIS         ||\n"
+                   "==================================================\n");
+
+	    int op = 0, lac = 0;         	//  Variaveis de controle.
+
+	    printf("  (1) Operar matriz 1.           \n"
+                   "  (2) Operar matriz 2.           \n"
+                   "  (3) Retornar ao menu anterior. \n"
+                   "  Qual operacao deseja executar? ");
+	    scanf("%d", &op);
+	    while (lac != 1) {
+	    	switch (op) {
+			case 1:
+				Simetrica(M1, Lin1, Col1);
+				lac = 1;
+				break;
+			case 2:
+				Simetrica(M2, Lin2, Col2);
+				lac = 1;
+				break;
+			case 3:
+				lac = 1;
+				break;
+			default:
+				printf("\7  Operacao invalida.\n");
+				lac = 1;
+				break;
+		}
 			}
 			ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
 			break;
 		}
         case 4:
-            printf("\n");
+            printf("==================================================\n"
+                   "||               ADICAO MATRICIAL               ||\n"
+                   "==================================================\n"
+                   "  A soma das Matrizes resulta em:                 \n");
 			AuxSoma(M1, M2, Lin1, Col1, Lin2, Col2, Matz);
 			ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
             break;
         case 5:
-            printf("\n");
+            printf("==================================================\n"
+                   "||             SUBTRACAO  MATRICIAL             ||\n"
+                   "==================================================\n"
+                   "  A diferenca das Matrizes resulta em:            \n");
             break;
-        case 6:
-		{
-            printf("\n");
-			int op=0, lac=0;							//Variaveis de controle
-			printf("\n");
-			printf("Digite 1 para operar a matriz 1\nDigite 2 para operar a matriz 2\nDigite 3 para retornar\n");
-			scanf("%d", &op);
-			while(lac!=1)
-			{
-				switch (op)
-				{
+        case 6: {
+            printf("==================================================\n"
+                   "||      PRODUTO DE MATRIZ  POR NUMERO REAL      ||\n"
+                   "==================================================\n");
+
+			int op = 0, lac = 0;            //  Variaveis de controle
+
+			printf("  (1) Operar matriz 1.           \n"
+                   "  (2) Operar matriz 2.           \n"
+                   "  (3) Retornar ao menu anterior. \n"
+                   "  Qual operacao deseja executar? ");
+            scanf("%d", &op);
+			while (lac != 1) {
+				switch (op) {
 					case 1:
-						MatPlusReal(M1, Lin1, Col1);
-						lac=1;
+						MatXReal(M1, Lin1, Col1);
+						lac = 1;
 						break;
 					case 2:
-						MatPlusReal(M2, Lin2, Col2);
-						lac=1;
+						MatXReal(M2, Lin2, Col2);
+						lac = 1;
 						break;
 					case 3:
-						lac =1;
+						lac = 1;
 						break;
 					default:
-						printf("Operacao Invalida, tente novamente\n");
-						lac=1;
+						printf("\7  Operacao Invalida. Tente novamente.\n");
+						lac = 1;
 						break;
 				}
 			}
-			ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
+	    ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
             break;
 		}
         case 7:
-            printf("\n");
+            printf("==================================================\n"
+                   "||              PRODUTO  MATRICIAL              ||\n"
+                   "==================================================\n"
+                   "  A multiplicacao entre Matrizes e:               \n");
             break;
-        case 8:
-		{
-			printf("\n");
-			int op=0, lac=0;							//Variaveis de controle
-			printf("Digite 1 para operar a matriz 1\nDigite 2 para operar a matriz 2\nDigite 3 para retornar\n");
-			scanf("%d", &op);
-			while(lac!=1)
-			{
-				switch(op)
-				{
-					case 1:
-						Determinante(M1, Lin1, Col1);
-						lac=1;
-						break;
-					case 2:
-						Determinante(M2, Lin2, Col2);
-						lac=1;
-						break;
-					case 3:
-						lac=1;
-						break;
-					default:
-						printf("Operacao invalida\n");
-						lac=1;
-						break;
-				}
+        case 8: {
+	    printf("==================================================\n"
+                   "||                 DETERMINANTE                 ||\n"
+                   "==================================================\n");
+
+	    int op = 0, lac = 0;        //  Variaveis de controle
+
+	    printf("  (1) Operar matriz 1.           \n"
+                   "  (2) Operar matriz 2.           \n"
+                   "  (3) Retornar ao menu anterior. \n"
+                   "  Qual operacao deseja executar? ");
+            scanf("%d", &op);
+	    printf("\n");
+		while(lac != 1) {
+			switch(op) {
+				case 1:
+					Determinante(M1, Lin1, Col1);
+					lac = 1;
+					break;
+				case 2:
+					Determinante(M2, Lin2, Col2);
+					lac = 1;
+					break;
+				case 3:
+					lac = 1;
+					break;
+				default:
+					printf("  Operacao invalida.\n");
+					lac = 1;
+					break;
 			}
-			ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
+		}
+	    ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
             break;
 		}
 		case 9:
-			Sair(M1, M2);
+			SairMat(M1, M2);
+			menu();
 			break;
         case 0:
-			Sair(M1, M2);
-            printf("      Obrigado por utilizar este programa!\n");
-            break;
+		SairMat(M1, M2);
+        	printf("      Obrigado por utilizar este programa!\n");
+        	break;
         default:
-            printf("\7      Opcao invalida. Digite outra opcao.\n\n");
-            menu();
+        	printf("\7      Opcao invalida. Digite outra opcao.\n\n");
+        	smenu_mat(M1, M2, Lin1, Col1, Lin2, Col2, Matz);
     }
 }
 
