@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "ICCCrusaders.h"
+#include "vetorematriz.h"
 
 /********************************************************
  *            UNIVERSIDADE ESTADUAL DO CEARA            *
@@ -16,11 +16,6 @@
  *         Camila Alves Barbosa                 1394330 *
  *         Joao Alison de Moraes Silveira       1387122 *
  *******************************************************/
-
-/*
-   BUGS CONHECIDOS:
-        1 - SUBTRACAO E NUMERO REAL QUANDO DIGITADOS opcao invalida bugam...
-*/
 
 
 // AREA DE DECLARACAO DAS FUNCOES:
@@ -97,9 +92,8 @@ int smenu_vet(float *V1, float *V2, int Lin1, int Lin2) {
            "  (4) Subtracao vetorial.\n"
            "  (5) Produto de um vetor por um numero real.\n"
            "  (6) Produto escalar entre vetores.\n"
-           "  (7) Norma vetorial.\n"
-           "  (8) Voltar ao Menu Principal.\n"
-           "  (9) Sair.\n"
+           "  (7) Voltar ao Menu Principal.\n"
+           "  (8) Sair.\n"
            "      Qual operacao deseja executar? ");
     scanf("%d", &opc_smenu_vet);
     printf("\n");
@@ -120,79 +114,57 @@ int smenu_vet(float *V1, float *V2, int Lin1, int Lin2) {
                    "==================================================\n"
                    "  Os Vetores inseridos foram:                     \n");
             ExiVet(V1, Lin1);
+			printf("\n");
 			ExiVet(V2, Lin2);
             printf("\n");
             ret_smenu_vet(V1, V2, Lin1, Lin2);
-            printf("\n");
             break;
 
         case 3:
             printf("==================================================\n"
                    "||                ADICAO VETORIAL               ||\n"
-                   "==================================================\n"
-                   "  A soma dos Vetores resulta em:                  \n");
+                   "==================================================\n");
 			AddVet(V1, V2, Lin1, Lin2);
-			ret_smenu_vet(V1, V2, Lin1, Lin2);
 			printf("\n");
+			ret_smenu_vet(V1, V2, Lin1, Lin2);
             break;
         case 4:
             printf("==================================================\n"
                    "||              SUBTRACAO VETORIAL              ||\n"
-                   "==================================================\n"
-                   "  A subtracao dos Vetores resulta em:             \n");
+                   "==================================================\n");
 			SubVet(V1, V2, Lin1, Lin2);
-			ret_smenu_vet(V1, V2, Lin1, Lin2);
 			printf("\n");
+			ret_smenu_vet(V1, V2, Lin1, Lin2);
             break;
-        case 5: {
+        case 5:
             printf("==================================================\n"
                    "||       PRODUTO DE VETOR POR NUMERO REAL       ||\n"
-                   "==================================================\n"
-                   "  A multiplicacao do Vetor por um numero real e:  \n");
-
-			int op = 0, lac = 0;
-
-			printf("  (1) Operar o Vetor 1 com um numero real.\n"
-                   "  (2) Operar o Vetor 2 com um numero real.\n"
-                   "  (3) Retornar ao menu anterior.          \n"
-                   "  Qual operacao deseja executar? ");
-			scanf("&d", &op);
-			while(lac != 1) {
-				switch(op) {
-					case 1:
-						VetXReal (V1, Lin1);
-						lac = 1;
-						break;
-					case 2:
-						VetXReal (V2, Lin2);
-						lac = 1;
-						break;
-					case 3:
-						lac = 1;
-						break;
-					default:
-						printf("  Opcao invalida.\n");
-						lac = 1;
-						break;
-				}
-			}
-			ret_smenu_vet(V1, V2, Lin1, Lin2);
+                   "==================================================\n");
+			VetXReal(V1, V2, Lin1, Lin2);
+			printf("\n");
+            ret_smenu_vet(V1, V2, Lin1, Lin2);
             break;
-		}
-        case 8:
-	    SairVet(V1, V2);
+        case 6:
+            printf("==================================================\n"
+                   "||        PRODUTO ESCALAR  ENTRE VETORES        ||\n"
+                   "==================================================\n");
+            ProdEsc(V1, V2, Lin1, Lin2);
+            printf("\n");
+            ret_smenu_vet(V1, V2, Lin1, Lin2);
+            break;
+        case 7:
+			SairVet(V1, V2);
             menu();
             break;
-        case 9:
-	    SairVet(V1, V2);
+        case 8:
+			SairVet(V1, V2);
             printf("      Obrigado por utilizar este programa!\n");
             break;
         default:
             printf("\7      Opcao invalida. Digite outra opcao.\n \n");
             smenu_vet(V1, V2, Lin1, Lin2);
-    }
+        }
 }
-
 
 
 // (2) SUBMENU DAS MATRIZES
@@ -220,50 +192,62 @@ int smenu_mat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, 
 
     switch (opc_smenu_mat) {
         case 1:
-	    printf("==================================================\n"
+			printf("==================================================\n"
                    "||               INSERIR MATRIZES               ||\n"
                    "==================================================\n");
-	    InsMat();         //  Declara os vetores todos de novo.
+			InsMat();                                                 //  Declara os vetores todos de novo.
             break;
         case 2:
             printf("==================================================\n"
                    "||              MATRIZES INSERIDAS              ||\n"
                    "==================================================\n"
                    "  As Matrizes inseridas foram:                    \n");
-	    ExiMat(M1, Lin1, Col1);
-	    ExiMat(M2, Lin2, Col2);
-	    ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
+			ExiMat(M1, Lin1, Col1);
+			printf("\n");
+			ExiMat(M2, Lin2, Col2);
+			printf("\n");
+			ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
             break;
         case 3: {
             printf("==================================================\n"
                    "||         VERIFICAR MATRIZES ESPECIAIS         ||\n"
                    "==================================================\n");
 
-	    int op = 0, lac = 0;         	//  Variaveis de controle.
+			int op = 0, lac = 0;         	//  Variaveis de controle.
 
-	    printf("  (1) Operar matriz 1.           \n"
+			printf("  (1) Operar matriz 1.           \n"
                    "  (2) Operar matriz 2.           \n"
                    "  (3) Retornar ao menu anterior. \n"
                    "  Qual operacao deseja executar? ");
-	    scanf("%d", &op);
-	    while (lac != 1) {
-	    	switch (op) {
-			case 1:
-				Simetrica(M1, Lin1, Col1);
-				lac = 1;
-				break;
-			case 2:
-				Simetrica(M2, Lin2, Col2);
-				lac = 1;
-				break;
-			case 3:
-				lac = 1;
-				break;
-			default:
-				printf("\7  Operacao invalida.\n");
-				lac = 1;
-				break;
-		}
+			scanf("%d", &op);
+			printf("\n");
+			while (lac != 1) {
+				switch (op) {
+					case 1:
+						printf("  A matriz transposta e:\n");
+						Transposta(M1, Lin1, Col2);
+						printf("\n");
+						Simetrica(M1, Lin1, Col1);
+						printf("\n");
+						lac = 1;
+						break;
+					case 2:
+						printf("  A matriz transposta e:\n");
+						Transposta(M2, Lin1, Col2);
+						printf("\n");
+						Simetrica(M2, Lin2, Col2);
+						printf("\n");
+						lac = 1;
+						break;
+					case 3:
+						lac = 1;
+						break;
+					default:
+						printf("\7  Operacao invalida. Tente novamente.\n");
+						printf("\n");
+						lac = 1;
+						break;
+				}
 			}
 			ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
 			break;
@@ -274,6 +258,7 @@ int smenu_mat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, 
                    "==================================================\n"
                    "  A soma das Matrizes resulta em:                 \n");
 			AuxSoma(M1, M2, Lin1, Col1, Lin2, Col2, Matz);
+			printf("\n");
 			ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
             break;
         case 5:
@@ -281,27 +266,32 @@ int smenu_mat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, 
                    "||             SUBTRACAO  MATRICIAL             ||\n"
                    "==================================================\n"
                    "  A diferenca das Matrizes resulta em:            \n");
+            AuxSub(M1, M2, Lin1, Col1, Lin2, Col2, Matz);
+            printf("\n");
+            ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
             break;
         case 6: {
             printf("==================================================\n"
                    "||      PRODUTO DE MATRIZ  POR NUMERO REAL      ||\n"
                    "==================================================\n");
 
-			int op = 0, lac = 0;            //  Variaveis de controle
+			int opc = 0, lac = 0;            //  Variaveis de controle.
 
 			printf("  (1) Operar matriz 1.           \n"
                    "  (2) Operar matriz 2.           \n"
                    "  (3) Retornar ao menu anterior. \n"
                    "  Qual operacao deseja executar? ");
-            scanf("%d", &op);
+            scanf("%d", &opc);
 			while (lac != 1) {
-				switch (op) {
+				switch (opc) {
 					case 1:
 						MatXReal(M1, Lin1, Col1);
+						printf("\n");
 						lac = 1;
 						break;
 					case 2:
 						MatXReal(M2, Lin2, Col2);
+						printf("\n");
 						lac = 1;
 						break;
 					case 3:
@@ -309,52 +299,57 @@ int smenu_mat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, 
 						break;
 					default:
 						printf("\7  Operacao Invalida. Tente novamente.\n");
+						printf("\n");
 						lac = 1;
 						break;
 				}
 			}
-	    ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
+			ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
             break;
 		}
         case 7:
             printf("==================================================\n"
                    "||              PRODUTO  MATRICIAL              ||\n"
-                   "==================================================\n"
-                   "  A multiplicacao entre Matrizes e:               \n");
+                   "==================================================\n");
+            MultMat (M1, M2, Lin1, Col1, Lin2, Col2);
+            printf("\n");
+            ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
             break;
         case 8: {
-	    printf("==================================================\n"
+			printf("==================================================\n"
                    "||                 DETERMINANTE                 ||\n"
                    "==================================================\n");
 
-	    int op = 0, lac = 0;        //  Variaveis de controle
+			int opc = 0, lac = 0;        //  Variaveis de controle.
 
-	    printf("  (1) Operar matriz 1.           \n"
+			printf("  (1) Operar matriz 1.           \n"
                    "  (2) Operar matriz 2.           \n"
                    "  (3) Retornar ao menu anterior. \n"
                    "  Qual operacao deseja executar? ");
-            scanf("%d", &op);
-	    printf("\n");
-		while(lac != 1) {
-			switch(op) {
-				case 1:
-					Determinante(M1, Lin1, Col1);
-					lac = 1;
-					break;
-				case 2:
-					Determinante(M2, Lin2, Col2);
-					lac = 1;
-					break;
-				case 3:
-					lac = 1;
-					break;
-				default:
-					printf("  Operacao invalida.\n");
-					lac = 1;
-					break;
+            scanf("%d", &opc);
+			printf("\n");
+			while(lac != 1) {
+				switch(opc) {
+					case 1:
+						Determinante(M1, Lin1, Col1);
+						printf("\n");
+						lac = 1;
+						break;
+					case 2:
+						Determinante(M2, Lin2, Col2);
+						printf("\n");
+						lac = 1;
+						break;
+					case 3:
+						lac = 1;
+						break;
+					default:
+						printf("  Operacao invalida. Tente novamente.\n");
+						lac = 1;
+						break;
+				}
 			}
-		}
-	    ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
+			ret_smenu_mat (M1, M2, Lin1, Col1, Lin2, Col2, Matz);
             break;
 		}
 		case 9:
@@ -362,12 +357,12 @@ int smenu_mat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, 
 			menu();
 			break;
         case 0:
-		SairMat(M1, M2);
-        	printf("      Obrigado por utilizar este programa!\n");
-        	break;
+			SairMat(M1, M2);
+            printf("      Obrigado por utilizar este programa!\n");
+            break;
         default:
-        	printf("\7      Opcao invalida. Digite outra opcao.\n\n");
-        	smenu_mat(M1, M2, Lin1, Col1, Lin2, Col2, Matz);
+            printf("\7      Opcao invalida. Insira outra opcao.\n\n");
+            smenu_mat(M1, M2, Lin1, Col1, Lin2, Col2, Matz);
     }
 }
 
@@ -380,11 +375,11 @@ void ret_smenu_vet (float *V1, float *V2, int Lin1, int Lin2) {
     getchar();
     getchar();
     smenu_vet(V1, V2, Lin1, Lin2);
-}
+};
 
 void ret_smenu_mat (float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz) {
     printf("  Pressione ENTER para voltar ao menu anterior.");
     getchar();
     getchar();
     smenu_mat(M1, M2, Lin1, Col1, Lin2, Col2, Matz);
-}
+};
