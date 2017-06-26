@@ -8,7 +8,7 @@
  *            CURSO DE CIENCIA DA COMPUTACAO            *
  *    DISCIPLINA  Introducao a Ciencia da Computacao    *
  *                                                      *
- *                                     Data: 21/06/2017 *
+ *                                     Data: 25/06/2017 *
  *                                                      *
  * Professor: Leonardo Sampaio Rocha                    *
  *                                                      *
@@ -30,7 +30,8 @@ void ExiVet(float *V1, int L);
 void SairVet(float *V1, float *V2);
 void AddVet(float *V1, float *V2, int Lin1, int Lin2);
 void SubVet(float *V1, float *V2, int Lin1, int Lin2);
-void VetXReal (float *V1, int Lin1);
+void VetXReal(float *V1,float *V2, int Lin1, int Lin2);
+void ProdEsc(float *V1, float *V2, int Lin1, int Lin2);
 
 // FUNCOES DAS MATRIZES:
 
@@ -39,10 +40,14 @@ float** FillMat(float *M[], int Lin, int Col, int Matz);
 void InsMat();
 void ExiMat(float *M[], int Lin, int Col);
 void SairMat(float *M1[], float *M2[]);
+void Transposta(float *M[], int Lin, int Col);
 void Simetrica(float *M[], int Lin, int Col);
-void AuxSoma(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz);
 float** AddMat(float *M1[], float *M2[], int Lin2, int Col2);
+void AuxSoma(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz);
+float** DiffMat(float *M1[], float *M2[], int Lin2, int Col2);
+void AuxSub(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz);
 void MatXReal(float *M[], int Lin, int Col);
+void MultMat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2);
 void Determinante(float *M[], int Lin, int Col);
 
 
@@ -67,10 +72,10 @@ struct Determinante {
 };
 
 
-
+//==============================================================================================================================================================//
 // (1) FUNCOES COM VETORES:
 
-// (1.1) Inserir Vetores
+// (1.1) INSERIR VETORES:
 
 void InsVet() {
 
@@ -103,26 +108,28 @@ void InsVet() {
 
 // (1.2) EXIBIR VETORES INSERIDOS:
 
-void ExiVet(float *V1, int L) {     // Passa 1 vetor e 1 inteiro para a funcao o vetor a ser lido e seu tamanho.
+void ExiVet(float *V1, int L) {     // Passa 1 vetor e 1 inteiro para a funcao, o vetor a ser lido e seu tamanho.
 
 	int m;
 
-    // Le o vetor e imprime na tela:
-
-	printf("  ( ");
+	printf("  ( ");                // Le o vetor e imprime na tela.
 	for (m = 0; m < L; m++) {
 		printf("%.2f ", V1[m]);
 	}
-	printf(") \n");
+	printf(") ");
+	printf("\n");
 }
 
 
 // (1.3) ADICAO VETORIAL:
 
-void AddVet(float *V1, float *V2, int Lin1, int Lin2) {        // Passa 2 vetores e seu tamanho na tela.
+void AddVet(float *V1, float *V2, int Lin1, int Lin2) {         // Passa 2 vetores e seu tamanho na tela.
 	if (Lin1 == Lin2) {                                         // Faz a soma caso haja 2 vetores e eles sejam de tamanhos iguais.
+
 		float *Soma2 = malloc(Lin1 * sizeof(float));
 		int m;
+
+		printf("  A adicao dos vetores resulta em:\n");
 		printf("  ( ");
 		for (m = 0; m < Lin1; m++) {
 			Soma2[m] = V1[m] + V2[m];
@@ -132,7 +139,8 @@ void AddVet(float *V1, float *V2, int Lin1, int Lin2) {        // Passa 2 vetore
 		free (Soma2);
 	}
 	else {
-        printf("  Quantidade de elementos incompatível. Reescreva os vetores e tente novamente.\n");
+        printf("\7  Quantidade de elementos entre vetores incompativel.\n"
+               "\7  Reescreva os vetores e tente novamente.\n");
     }
 }
 
@@ -143,66 +151,119 @@ void SubVet(float *V1, float *V2, int Lin1, int Lin2) {
 	if (Lin1 == Lin2) {
 
 		float *Subt = malloc(Lin1 * sizeof(float));
-		int m, n, lac = 0;
+		int m, opc, lac = 0;
 
 		printf("  (1) Subtrair o Vetor 2 do Vetor 1.\n"
                "  (2) Subtrair o Vetor 1 do Vetor 2.\n"
                "  (3) Sair.                         \n"
                "  Qual operacao deseja executar? ");
-		scanf("%d", &n);
+		scanf("%d", &opc);
+		printf("/n"
+        printf("  A subtracao dos vetores resulta em:\n");
 		while(lac != 1) {
 			printf("  ( ");
 			for (m = 0; m < Lin1; m++) {
-				switch (n) {
-				case 1:
-					Subt[m] = V1[m] + ((-1) * V2[m]);
-					printf("%.2f ", Subt[m]);
-					lac = 1;
-					break;
-				case 2:
-					Subt[m] = V2[m] + ((-1) *  V1[m]);
-					printf("%.2f ", Subt[m]);
-					lac = 1;
-					break;
-				case 3:
-					lac = 1;
-					break;
-				default:
-					printf("  Operacao invalida. ");
-					break;
+				switch (opc) {
+                    case 1:
+                        Subt[m] = V1[m] + ((-1) * V2[m]);
+                        printf("%.2f ", Subt[m]);
+                        lac = 1;
+                        break;
+                    case 2:
+                        Subt[m] = V2[m] + ((-1) *  V1[m]);
+                        printf("%.2f ", Subt[m]);
+                        lac = 1;
+                        break;
+                    case 3:
+                        lac = 1;
+                        break;
+                    default:
+                        printf("\7  Operacao invalida. ");
+                        lac = 1;
+                        break;
 				}
 			}
 			printf(")\n");
 		}
 	}
     else {
-        printf("Quantidade de elementos incompatível. Reescreva os vetores e tente novamente.\n");
+        printf("\7  Quantidade de elementos entre vetores incompativel.\n"
+               "\7  Reescreva os vetores e tente novamente.\n");
     }
 }
 
 
 // (1.5) PRODUTO DE UM VETOR POR UM NUMERO REAL:
 
-void VetXReal (float *V1, int Lin1) {
+void VetXReal (float *V1, float *V2, int Lin1, int Lin2) {
 
-	int m;
-	float r;
+    float *Vetxr = malloc(Lin1 * sizeof(float));
+	int m, opc, lac = 0;
+	float real;
 
-	printf("(  ");
-	for (m = 0; m < Lin1; m++) {
-		printf("%f ", V1[m]);
-	}
-	printf(" )\n");
+    printf("  Insira o numero real que vc quer operar: ");
+	scanf("%f", &real);
+    printf("\n"
+           "  (1) Operar o Vetor 1 com o numero real.\n"
+           "  (2) Operar o Vetor 2 com o numero real.\n"
+           "  (3) Retornar ao menu anterior.         \n"
+           "  Qual operacao deseja executar? ");
+    scanf("%d", &opc);
+	printf("\n"
+           "  A multiplicacao do vetor pelo numero real e:\n");
+    while (lac != 1) {
+        printf("  ( ");
+        for (m = 0; m < Lin1; m++) {
+            switch(opc) {
+                case 1:
+                    Vetxr[m] = (V1[m] * real);
+                    printf("%.4f ", Vetxr[m]);
+                    lac = 1;
+                    break;
+                case 2:
+                    Vetxr[m] = (V2[m] * real);
+                    printf("%.4f ", Vetxr[m]);
+                    lac = 1;
+                    break;
+                case 3:
+                    lac = 1;
+                    break;
+                default:
+                    printf("\7  Opcao invalida. Tente novamente.\n");
+                    lac = 1;
+                    break;
+            }
+        }
+        printf(")\n");
+    }
 }
 
 
-void SairVet(float *V1, float *V2) {
-	free(V1);
-	free(V2);
+// (1.6) PRODUTO ESCALAR ENTRE VETORES:
+
+void ProdEsc (float *V1, float *V2, int Lin1, int Lin2) {
+
+    int m, prod = 0;
+
+    for (m = 0; m < Lin1; m++){
+         prod = prod + V1[m] * V2[m];
+    }
+    printf("  O produto escalar entre os vetores e: %d.", prod);
+    printf("\n");
+
+    if (prod == 0) {
+        printf("  Os vetores sao ortogonais entre si.\n");
+    }
+    else if (prod > 0) {
+        printf("  Os vetores formam um angulo agudo entre si.\n");
+    }
+    else {
+        printf("  Os vetores formam um angulo obtuso entre si.\n");
+    }
 }
 
 
-
+//==============================================================================================================================================================//
 // (2) FUNCOES COM MATRIZES:
 
 
@@ -225,7 +286,7 @@ void FillLinCol(int *Lin, int *Col, int Matz) {
 // (1.1) INSERIR MATRIZES:
 
 float** FillMat(float *M[], int Lin, int Col, int Matz) {					//  Funcao de preenchimento de matrizes, so existe porque serve para N vetores
-                                                                            //  Declarando contadores
+                                                                            //  declarando contadores.
 	int i, j;
 	float **Mat;
 																			// Alocacao dinamica de linhas e colunas
@@ -235,7 +296,7 @@ float** FillMat(float *M[], int Lin, int Col, int Matz) {					//  Funcao de pree
 		for (j = 0; j < Lin; j++) {
 			printf("  Insira o elemento da linha %d e coluna %d da matriz %d: ", i + 1, j + 1, Matz + 1);
 			scanf("%f", &Mat[i][j]);
-			M[i][j] = Mat[i][j];										   //  Usando a matriz recem criada para preencher a matriz antiga
+			M[i][j] = Mat[i][j];										   //  Usando a matriz recem criada para preencher a matriz antiga.
 		}
 	}
 	printf("\n");
@@ -281,27 +342,40 @@ void ExiMat(float *M[], int Lin, int Col) { 		//  Recebe a matriz, sua linha e s
 
 // (1.3) VERIFICADOR DE MATRIZES ESPECIAIS:
 
+void Transposta(float *M[], int Lin, int Col) {
+
+	int n, m;
+
+	for (m = 0; m < Col; m++) {
+   		printf("  | ");
+   		for (n = 0; n < Lin; n++) {
+      		printf("%.2f ", M[n][m]);
+        }
+        printf("|\n");
+	}
+}
+
 void Simetrica(float *M[], int Lin, int Col) {
 	if (Lin == Col) {                        //  Verifica se a matriz e quadrada
 
 		int n, m, cont = 0;
 
-		for (m = 0; m < Lin; m++) {
-			for (n = 0; n < Col; n++) {
-				if (M[m][n] == M[n][m]) {    //  Percorre a matriz toda contando quantos elementos iguais ela tem.
+		for (m = 0; m < Col; m++) {
+			for (n = 0; n < Lin; n++) {
+				if (M[m][n] == M[n][m]) {   //  Percorre a matriz toda contando quantos elementos iguais ela tem.
 					cont++;
 				}
 			}
 		}
 		if (cont == (Lin * Col)) {
-			printf("  Matriz e simetrica.\n");
+			printf("  A matriz e simetrica.\n");
 		}
 		else {
-            printf("  Matriz nao e simetrica.\n");
+            printf("  A matriz nao e simetrica.\n");
         }
 	}
 	else {
-        printf("  Matriz nao e simetrica, pois nao e quadrada.\n");
+        printf("  A matriz nao e simetrica, pois nao e quadrada.\n");
     }
 }
 
@@ -326,8 +400,8 @@ float** AddMat(float *M1[], float *M2[], int Lin2, int Col2) {		//  Funcao que e
 void AuxSoma(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz) {    //  Funcao para auxiliar a soma criando uma variavel que vai receber a soma
     if (Col1 == Col2 && Lin1 == Lin2) {                                                       //  Recebe Matriz 1 e 2 declaradas na funcao de declaracao,
                                                                                               //  linhas e colunas das respectivas matrizes, alem da quantidade das N matrizes existentes...
-		struct Matrizes Soma;	     //  Cria um struct soma para poder receber os valores de M1, que e outro struc soma, se fosse float tentando receber de um
-		int m, n;				     //  float de dentro do struct daria erro (???).
+		struct Matrizes Soma;	                //  Cria um struct soma para poder receber os valores de M1, que e outro struc soma, se fosse float tentando receber de um
+		int m, n;				                //  float de dentro do struct daria erro (???).
 
 		Soma.Mat = malloc(Col1 * sizeof(float));
 		for (m = 0; m < Col1; m++) {
@@ -342,12 +416,51 @@ void AuxSoma(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, i
 		free(Soma.Mat);
 	}
 	else {
-		printf("  Matrizes de tamanhos invalidos. Reescreva a matriz e tente novamente.\n");
+		printf("\7  Matrizes de tamanhos invalidos. Reescreva a matriz e tente novamente.\n");
 	}
 }
 
 
 // (1.5) SUBTRACAO MATRICIAL:
+
+float** DiffMat(float *M1[], float *M2[], int Lin2, int Col2) {     //  Funcao que executa a subtração de N vetores, mas no trabalho vai executar so 2 :)
+                                                                    //  Recebe Matriz Diferenca da funcao auxiliar, matriz 2 declarada na funcao de declaracao,
+    int m, n;                                                       //  linha da matriz 2 e coluna da matriz 2 e a contadora das N matrizes.
+
+    for (m = 0; m < Col2; m++) {
+        printf("  | ");
+        for (n = 0; n < Lin2; n++) {
+            M1[m][n] = M2[m][n] + ((-1) * (M1[m][n]));
+            printf("%.2f ", M1[m][n]);
+        }
+        printf("|\n");
+    }
+    return M1;
+}
+
+void AuxSub(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2, int Matz) {    //  Funcao para auxiliar a subtracao criando uma variavel que vai receber a diferenca
+    if (Col1 == Col2 && Lin1 == Lin2) {                                                       //  Recebe Matriz 1 e 2 declaradas na funcao de declaracao,
+                                                                                              //  linhas e colunas das respectivas matrizes, alem da quantidade das N matrizes existentes...
+        struct Matrizes Sub;                   //  Cria um struct sub para poder receber os valores de M1, que e outro struc sub, se fosse float tentando receber de um
+        int m, n;                              //  float de dentro do struct daria erro (???).
+
+        Sub.Mat = malloc(Col1 * sizeof(float));
+        for (m = 0; m < Col1; m++) {
+            Sub.Mat[m] = malloc(Lin1 * sizeof(float));
+        }
+        for (m = 0; m < Col1; m++) {
+            for (n = 0; n < Lin1; n++) {
+                Sub.Mat[m][n] = M1[m][n];
+            }
+        }
+        Sub.Mat = DiffMat(Sub.Mat, M2, Lin2, Col2);
+        free(Sub.Mat);
+    }
+    else {
+        printf("\7  Matrizes de tamanhos invalidos. Reescreva a matriz e tente novamente.\n");
+    }
+}
+
 
 
 // (1.6) PRODUTO DE UMA MATRIZ POR UM NUMERO REAL:
@@ -364,10 +477,42 @@ void MatXReal(float *M[], int Lin, int Col) {
 	for (m = 0; m < Col; m++) {
 		printf("  | ");
 		for (n = 0; n < Lin; n++) {
-			printf("%.3f ", M[m][n]*r);
+			printf("%.4f ", M[m][n]*r);
 		}
 		printf("|\n");
 	}
+}
+
+
+// (1.7) PRODUTO MATRICIAL:
+
+void MultMat(float *M1[], float *M2[], int Lin1, int Col1, int Lin2, int Col2) {
+
+	int i, j, k;
+	float soma;
+
+	if (Col1 == Lin2) {
+		printf("  O produto matricial e:\n");
+		float MatR[Lin1][Col2];
+		for (i = 0; i < Lin1; i++)
+			for (j = 0; j < Col2; j++) {
+				soma = 0.0;
+				for (k = 0; k < Lin1; k++)
+					soma += M1[i][k] * M2[k][j];
+                MatR[i][j] = soma;
+            }
+        for (i = 0; i < Lin1; i++) {
+            printf("  | ");
+            for (j = 0; j < Col2; j++)
+                printf("%.2f ", MatR[i][j]);
+            printf("|\n");
+        }
+	}
+    else {
+        printf("\7  O numero de 'colunas' da matriz 1 deve ser  \n"
+               "  igual ao numero de 'linhas' da matriz 2.\n"
+               "  Reescreva as matrizes e tente novamente.\n");
+    }
 }
 
 
@@ -378,7 +523,7 @@ void Determinante(float *M[], int Lin, int Col) {
 		if (Lin <= 3) {
 			switch (Lin) {
 				case 1:
-					printf("A determinante e %.2f\n", M[0][0]);
+					printf("  A determinante e %.2f\n", M[0][0]);
 					break;
 				case 2: {
 
@@ -393,8 +538,8 @@ void Determinante(float *M[], int Lin, int Col) {
 					for (n = 0; n < 1; n++) {		//  Inicio do algoritmo de calculo de matriz 2x2.
 						for (x = 0; x < 2; x++) {
 							y = (x + n) % 2;												//  O calculo da variavel y e circular, ou seja, sempre que y for 2
-							Det[0].multi = Det[0].multi * M[x][y];							//  O mod atribuira o valor dele a 0, assim podemos percorrer toda
-						}																	//  A matriz.
+							Det[0].multi = Det[0].multi * M[x][y];							//  o mod atribuira o valor dele a 0, assim podemos percorrer toda
+						}																	//  a matriz.
 						Det[0].soma = Det[0].soma + Det[0].multi;
 					}
 					for (n = 1; n < 2; n++) {
@@ -435,7 +580,7 @@ void Determinante(float *M[], int Lin, int Col) {
 						Det[1].soma = Det[1].soma + Det[1].multi;
 					}
 					Det[0].det = Det[0].soma - Det[1].soma;
-					printf("A determinante e %.2f\n", Det[0].det);
+					printf("  A determinante e %.2f\n", Det[0].det);
 					break;
 				}
 				default:
@@ -454,6 +599,14 @@ void Determinante(float *M[], int Lin, int Col) {
     }
 }
 
+
+
+// FUNCAO PARA LIBERACAO DE MEMORIA DOS VETORES e MATRIZES:
+
+void SairVet(float *V1, float *V2) {
+	free(V1);                           //  Desalocando espaco na memoria que as vetores sugavam, esses vampiros...
+	free(V2);
+}
 
 void SairMat(float *M1[], float *M2[]) {
 	free (M1);		                    //  Desalocando espaco na memoria que as matrizes sugavam, essas suguinhas...
